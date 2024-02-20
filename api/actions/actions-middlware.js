@@ -9,15 +9,44 @@ function actionsLogger(req, res, next) {
     next()
 }
 
-function validateActionId(req, res, next) {
+async function validateActionId(req, res, next) {
+    try {
+        const action = await Action.getId(req.params.id)
+        if(!action) {
+            res.status(404).json({
+                message: `The action could not be found`
+            })
+        } else {
+            req.action = project
+            next()
+        }
+
+    } catch(err) {
+        res.status(500).json({
+            message: `There was an unspecified error retrieving the action`,
+            err: err.message
+        })
+    }
     
 }
 
 function validateAction(req, res, next) {
 
+    const { name } = req.body;
+    if(!name || !name.trim()) {
+      res.status(400).json({
+        message: `missing required name field`
+      })
+    } else {
+      req.name = name.trim()
+      next()
+    }
+
 }
 
 module.exports = {
-    actionsLogger
+    actionsLogger,
+    validateActionId,
+    validateAction
 
 }

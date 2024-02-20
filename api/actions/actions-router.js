@@ -6,13 +6,14 @@ const Action = require('./actions-model');
 const router = express.Router();
 
 // import middleware here if necessary
+const { validateAction, validateActionId } = require('./actions-middlware')
 
 // Inside `api/actions/actions-router.js` build endpoints for performing CRUD operations on _actions_:
 
 // - [ ] `[GET] /api/actions`
 //   - Returns an array of actions (or an empty array) as the body of the response.
 
-router.get('/', (req, res) => {
+router.get('/', validateAction, (req, res) => {
     
 
 })
@@ -22,7 +23,7 @@ router.get('/', (req, res) => {
 //   - If there is no action with the given `id` it responds with a status code 404.
 
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateAction, validateActionId, (req, res) => {
 
 })
 
@@ -31,7 +32,7 @@ router.get('/:id', (req, res) => {
 //   - If the request body is missing any of the required fields it responds with a status code 400.
 //   - When adding an action make sure the `project_id` provided belongs to an existing `project`.
 
-router.post('/', (req, res) => {
+router.post('/', validateAction, (req, res) => {
 
 })
 
@@ -40,14 +41,14 @@ router.post('/', (req, res) => {
 //   - If there is no action with the given `id` it responds with a status code 404.
 //   - If the request body is missing any of the required fields it responds with a status code 400.
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateAction, validateActionId, (req, res) => {
 
 })
 
 // - [ ] `[DELETE] /api/actions/:id`
 //   - Returns no response body.
 //   - If there is no action with the given `id` it responds with a status code 404.
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateAction, validateActionId, (req, res) => {
 
 })
 

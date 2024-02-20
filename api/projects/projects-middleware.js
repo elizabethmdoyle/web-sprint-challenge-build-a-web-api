@@ -10,8 +10,8 @@ function projectsLogger(req, res, next) {
     console.log(`${timestamp} ${method} to ${url}`)
     next()
 }
-
-function validateProject(req, res) {
+ 
+async function validateProject (req, res, next) {
     try {
         const project = await Project.getId(req.params.id)
         if(!project) {
@@ -33,7 +33,17 @@ function validateProject(req, res) {
 }
 
 function validateProjectId(req, res, next) {
-    
+
+    const { name } = req.body;
+  if(!name || !name.trim()) {
+    res.status(400).json({
+      message: `missing required name field`
+    })
+  } else {
+    req.name = name.trim()
+    next()
+  }
+   
 }
 
 
@@ -41,4 +51,5 @@ function validateProjectId(req, res, next) {
 module.exports = {
     projectsLogger,
     validateProject,
+    validateProjectId
 }

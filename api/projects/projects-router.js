@@ -3,6 +3,9 @@ const express = require('express');
 const Project = require('./projects-model');
 const Action = require('../actions/actions-model');
 
+const { validateProject, validateProjectId } = require('./projects-middleware');
+const {validateAction } = require('../actions/actions-middlware');
+
 const router = express.Router();
 // Inside `api/projects/projects-router.js` build the following endpoints:
 
@@ -10,21 +13,23 @@ const router = express.Router();
 //   - Returns an array of projects as the body of the response.
 //   - If there are no projects it responds with an empty array.
 
-router.get('/', (req, res) => {
+
+
+router.get('/', validateProject, (req, res) => {
 
 })
 // - [ ] `[GET] /api/projects/:id`
 //   - Returns a project with the given `id` as the body of the response.
 //   - If there is no project with the given `id` it responds with a status code 404.
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateProject, validateProjectId, (req, res) => {
     
 })
 // - [ ] `[POST] /api/projects`
 //   - Returns the newly created project as the body of the response.
 //   - If the request body is missing any of the required fields it responds with a status code 400.
 
-router.post('/', (req, res) => {
+router.post('/', validateProject,  (req, res) => {
     
 })
 // - [ ] `[PUT] /api/projects/:id`
@@ -32,7 +37,7 @@ router.post('/', (req, res) => {
 //   - If there is no project with the given `id` it responds with a status code 404.
 //   - If the request body is missing any of the required fields it responds with a status code 400.
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateProject, validateProjectId,  (req, res) => {
     
 })
 
@@ -40,7 +45,7 @@ router.put('/:id', (req, res) => {
 //   - Returns no response body.
 //   - If there is no project with the given `id` it responds with a status code 404.
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateProject, validateProjectId, (req, res) => {
     
 })
 
@@ -48,7 +53,7 @@ router.delete('/:id', (req, res) => {
 //   - Returns an array of actions (could be empty) belonging to a project with the given `id`.
 //   - If there is no project with the given `id` it responds with a status code 404.
 
-router.get('/:id/actions', (req, res) => {
+router.get('/:id/actions', validateProject, validateProjectId, validateAction, (req, res) => {
     
 })
 
