@@ -58,9 +58,17 @@ router.post('/', validateAction, (req, res, next) => {
 // - [ ] `[DELETE] /api/actions/:id`
 //   - Returns no response body.
 //   - If there is no action with the given `id` it responds with a status code 404.
-// router.delete('/:id', validateAction, validateActionId, (req, res) => {
+router.delete('/:id', validateActionId, async (req, res, next) => {
+    try {
+        const result = await Action.remove(req.params.id)
+        res.json(result)
+   
+       }
+       catch (err) {
+         next(err)
+       }
 
-// })
+})
 
 // get(): resolves to an array of all the resources contained in the database. If you pass an id to this method it will return the resource with that id if one is found.
 // insert(): calling insert passing it a resource object will add it to the database and return the newly created resource.

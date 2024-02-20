@@ -63,7 +63,15 @@ router.put('/:id', validateProject, validateProjectId,  (req, res, next) => {
 //   - Returns no response body.
 //   - If there is no project with the given `id` it responds with a status code 404.
 
-router.delete('/:id', validateProject, validateProjectId, (req, res) => {
+router.delete('/:id', validateProjectId, async (req, res, next) => {
+    try {
+        const result = await Project.remove(req.params.id)
+        res.json(result)
+   
+       }
+       catch (err) {
+         next(err)
+       }
     
 })
 
