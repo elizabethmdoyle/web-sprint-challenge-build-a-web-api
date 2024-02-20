@@ -11,7 +11,7 @@ function projectsLogger(req, res, next) {
     next()
 }
  
-async function validateProject (req, res, next) {
+async function validateProjectId (req, res, next) {
     try {
         const project = await Project.get(req.params.id)
         if(!project) {
@@ -32,15 +32,16 @@ async function validateProject (req, res, next) {
 
 }
 
-function validateProjectId(req, res, next) {
+function validateProject(req, res, next) {
 
-    const { name } = req.body;
-  if(!name || !name.trim()) {
+    const { name, description } = req.body;
+  if((!name || !name.trim()) || (!description || !description.trim()) ) {
     res.status(400).json({
-      message: `missing required name field`
+      message: `Both description and name are required`
     })
   } else {
     req.name = name.trim()
+    req.description = description.trim()  
     next()
   }
    

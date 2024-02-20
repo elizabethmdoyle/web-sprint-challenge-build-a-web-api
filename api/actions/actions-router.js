@@ -36,10 +36,15 @@ router.get('/:id', validateActionId, (req, res) => {
 //   - If the request body is missing any of the required fields it responds with a status code 400.
 //   - When adding an action make sure the `project_id` provided belongs to an existing `project`.
 
-// router.post('/', validateAction, (req, res) => {
+router.post('/', validateAction, (req, res, next) => {
 
+    Action.insert({description: req.description, notes: req.notes})
+    .then(newProject => {
+        res.status(201).json(newProject)
+    })
+    .catch(next)
 
-// })
+})
 
 // - [ ] `[PUT] /api/actions/:id`
 //   - Returns the updated action as the body of the response.

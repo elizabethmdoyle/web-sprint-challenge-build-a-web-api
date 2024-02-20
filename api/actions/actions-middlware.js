@@ -32,15 +32,16 @@ async function validateActionId(req, res, next) {
 
 function validateAction(req, res, next) {
 
-    const { name } = req.body;
-    if(!name || !name.trim()) {
-      res.status(400).json({
-        message: `missing required name field`
-      })
-    } else {
-      req.name = name.trim()
-      next()
-    }
+    const { description, notes } = req.body;
+  if((!description || !description.trim()) || (!notes || !notes.trim()) ) {
+    res.status(400).json({
+      message: `Both description and name are required`
+    })
+  } else {
+    req.notes = notes.trim()
+    req.description = description.trim()  
+    next()
+  }
 
 }
 
