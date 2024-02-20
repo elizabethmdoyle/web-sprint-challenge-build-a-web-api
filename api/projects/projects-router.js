@@ -79,8 +79,23 @@ router.delete('/:id', validateProjectId, async (req, res, next) => {
 //   - Returns an array of actions (could be empty) belonging to a project with the given `id`.
 //   - If there is no project with the given `id` it responds with a status code 404.
 
-router.get('/:id/actions', validateProject, validateProjectId, validateAction, (req, res) => {
-    
+
+//elements of this are not correct yet
+router.get('/:id/actions', validateProjectId, validateAction, async (req, res) => {
+    try {
+        const result = await Action.insert({
+          user_id: req.params.id,
+          notes: req.notes,
+          description: req.description,
+        
+        })
+        res.status(201).json(result)
+      } 
+      catch (err) {
+      next(err)
+      }
+
+
 })
 
 // get(): resolves to an array of all the resources contained in the database. If you pass an id to this method it will return the resource with that id if one is found.

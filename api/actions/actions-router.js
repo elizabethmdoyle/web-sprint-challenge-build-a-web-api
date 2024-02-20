@@ -51,9 +51,17 @@ router.post('/', validateAction, (req, res, next) => {
 //   - If there is no action with the given `id` it responds with a status code 404.
 //   - If the request body is missing any of the required fields it responds with a status code 400.
 
-// router.put('/:id', validateAction, validateActionId, (req, res) => {
-
-// })
+router.put('/:id', validateAction, validateActionId, (req, res, next) => {
+    Action.update(req.params.id, {project_id: req.project_id, description: req.description, notes: req.notes, completed: (req.completed || false)})
+    .then(() => {
+      return Action.get(req.params.id)
+    })
+    .then(action => {
+      res.json(action)
+    })
+    .catch(next)
+   
+})
 
 // - [ ] `[DELETE] /api/actions/:id`
 //   - Returns no response body.
