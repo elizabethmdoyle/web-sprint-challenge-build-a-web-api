@@ -36,8 +36,8 @@ router.get('/:id', validateProjectId, (req, res) => {
 //   - Returns the newly created project as the body of the response.
 //   - If the request body is missing any of the required fields it responds with a status code 400.
 
-router.post('/', validateProject, (req, res, next) => {
-    Project.insert({name: req.name, description: req.description, completed: (req.completed || false)})
+router.post('/', validateProject, async (req, res, next) => {
+    Project.insert(req.body)
         .then(newProject => {
             res.status(201).json(newProject)
         })
@@ -49,7 +49,7 @@ router.post('/', validateProject, (req, res, next) => {
 //   - If the request body is missing any of the required fields it responds with a status code 400.
 
 router.put('/:id', validateProject, validateProjectId,  (req, res, next) => {
-    Project.update(req.params.id, {name: req.name, description: req.description, completed: (req.completed || false)})
+    Project.update(req.params.id, {notes: req.notes, description: req.description, completed: req.completed})
     .then(() => {
         return Project.get(req.params.id)
       })
@@ -81,7 +81,7 @@ router.delete('/:id', validateProjectId, async (req, res, next) => {
 
 
 //elements of this are not correct yet
-router.get('/:id/actions', validateProjectId, validateAction, async (req, res) => {
+router.get('/:id/actions', validateProjectId, validateAction, async (req, res, next) => {
     try {
         const result = await Action.insert({
           user_id: req.params.id,
