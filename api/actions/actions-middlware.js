@@ -17,7 +17,7 @@ async function validateActionId(req, res, next) {
                 message: `The action could not be found`
             })
         } else {
-            req.action = project
+            req.action = action
             next()
         }
 

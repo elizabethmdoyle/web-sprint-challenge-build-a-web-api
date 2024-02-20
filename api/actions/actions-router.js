@@ -13,8 +13,12 @@ const { validateAction, validateActionId } = require('./actions-middlware')
 // - [ ] `[GET] /api/actions`
 //   - Returns an array of actions (or an empty array) as the body of the response.
 
-router.get('/', validateAction, (req, res) => {
-    
+router.get('/', (req, res, next) => {
+    Action.get()
+        .then(actions => {
+            res.json(actions)
+        })
+        .catch(next)
 
 })
 
@@ -23,7 +27,7 @@ router.get('/', validateAction, (req, res) => {
 //   - If there is no action with the given `id` it responds with a status code 404.
 
 
-router.get('/:id', validateAction, validateActionId, (req, res) => {
+router.get('/:id', validateActionId, (req, res) => {
 
 })
 
@@ -32,25 +36,25 @@ router.get('/:id', validateAction, validateActionId, (req, res) => {
 //   - If the request body is missing any of the required fields it responds with a status code 400.
 //   - When adding an action make sure the `project_id` provided belongs to an existing `project`.
 
-router.post('/', validateAction, (req, res) => {
+// router.post('/', validateAction, (req, res) => {
 
-})
+// })
 
 // - [ ] `[PUT] /api/actions/:id`
 //   - Returns the updated action as the body of the response.
 //   - If there is no action with the given `id` it responds with a status code 404.
 //   - If the request body is missing any of the required fields it responds with a status code 400.
 
-router.put('/:id', validateAction, validateActionId, (req, res) => {
+// router.put('/:id', validateAction, validateActionId, (req, res) => {
 
-})
+// })
 
 // - [ ] `[DELETE] /api/actions/:id`
 //   - Returns no response body.
 //   - If there is no action with the given `id` it responds with a status code 404.
-router.delete('/:id', validateAction, validateActionId, (req, res) => {
+// router.delete('/:id', validateAction, validateActionId, (req, res) => {
 
-})
+// })
 
 // get(): resolves to an array of all the resources contained in the database. If you pass an id to this method it will return the resource with that id if one is found.
 // insert(): calling insert passing it a resource object will add it to the database and return the newly created resource.
