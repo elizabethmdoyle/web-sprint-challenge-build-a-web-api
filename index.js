@@ -22,12 +22,18 @@ const PORT = process.env.PORT || 9000;
 server.use(express.json());
 server.use(cors());
 
+server.get('/', (req, res) => {
+    res.send(`<h2>Let's write some actions and projects!</h2>`);
+  });
 
+  
 server.get('*', (req, res) => {
-    res.json({
-        message: `API is working`
+    res.status(404).json({
+        message: `This endpoint is not valid`
     })
 })
+
+
 
 server.use((err, req, res, next) => {//eslint-disable-line 
     res.status(500).json({

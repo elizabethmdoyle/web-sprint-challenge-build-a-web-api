@@ -27,8 +27,8 @@ router.get('/', (req, res, next) => {
 //   - If there is no action with the given `id` it responds with a status code 404.
 
 
-router.get('/:id', validateActionId, (req, res) => {
-
+router.get('/:id', validateAction, validateActionId, (req, res) => {
+    res.json(req.action)
 })
 
 // - [ ] `[POST] /api/actions`

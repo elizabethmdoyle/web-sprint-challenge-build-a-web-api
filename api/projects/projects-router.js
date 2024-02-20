@@ -15,7 +15,13 @@ const router = express.Router();
 
 
 
-router.get('/', validateProject, (req, res) => {
+router.get('/', (req, res, next) => {
+
+    Project.get()
+    .then(projects => {
+        res.json(projects)
+    })
+    .catch(next)
 
 })
 // - [ ] `[GET] /api/projects/:id`
@@ -23,6 +29,7 @@ router.get('/', validateProject, (req, res) => {
 //   - If there is no project with the given `id` it responds with a status code 404.
 
 router.get('/:id', validateProject, validateProjectId, (req, res) => {
+    res.json(req.project)
     
 })
 // - [ ] `[POST] /api/projects`
