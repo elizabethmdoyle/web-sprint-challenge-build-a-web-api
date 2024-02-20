@@ -30,26 +30,39 @@ async function validateActionId(req, res, next) {
     
 }
 
-function validateAction(req, res, next) {
 
- const { project_id, description, notes, completed } = req.body;
-  if((!description || !description.trim()) || (!notes || !notes.trim()) || (!project_id || !project_id.trim()) ) {
-    res.status(400).json({
-      message: `Description , project id and notes are required`
-    })
-  } else {
-    req.project_id = project_id.trim()
-    req.notes = notes.trim()
-    req.description = description.trim()  
-    req.completed = completed
-    next()
-  }
 
+
+async function validateAction(req, res, next) {
+    try {
+        const {project_id, description, notes} = req.body;
+        const isValid = await Action.get(project_id)
+        if (!project_id || !description || !notes ) {
+            next({status : 400, message : "need projectid, description, and notes"})
+        } else if (!isValid) {
+            next({status : 404, message  : `project with id ${project_id} does not exist`})
+        } else {
+            next(); 
+        }
+    } catch (err) { next(err) }
 }
+
+async function validateActionPut(req, res, next) {
+    try {
+        const {description,notes,completed} = req.body;
+        if (!description || !notes || !completed) {
+            next({status : 400, message : "need description, completed, and notes"})
+        } else {
+            next(); 
+        }
+    } catch (err) { next(err) }
+}
+
 
 module.exports = {
     actionsLogger,
     validateActionId,
-    validateAction
+    validateAction,
+    validateActionPut
 
 }

@@ -6,7 +6,7 @@ const Action = require('./actions-model');
 const router = express.Router();
 
 // import middleware here if necessary
-const { validateAction, validateActionId } = require('./actions-middlware')
+const { validateAction, validateActionId, validateActionPut } = require('./actions-middlware')
 
 // Inside `api/actions/actions-router.js` build endpoints for performing CRUD operations on _actions_:
 
@@ -36,14 +36,11 @@ router.get('/:id', validateActionId, (req, res) => {
 //   - If the request body is missing any of the required fields it responds with a status code 400.
 //   - When adding an action make sure the `project_id` provided belongs to an existing `project`.
 
-router.post('/', validateAction, (req, res, next) => {
-
-    Action.insert({project_id: req.project_id, description: req.description, notes: req.notes, completed: (req.completed || false)})
-    .then(newProject => {
-        res.status(201).json(newProject)
-    })
-    .catch(next)
-
+router.post("/", validateAction, async (req, res, next) => {
+    try {
+        const postedAction = await Action.insert(req.body)
+        res.status(201).json(postedAction);
+    } catch (err) { next(err) }
 })
 
 // - [ ] `[PUT] /api/actions/:id`
@@ -51,16 +48,11 @@ router.post('/', validateAction, (req, res, next) => {
 //   - If there is no action with the given `id` it responds with a status code 404.
 //   - If the request body is missing any of the required fields it responds with a status code 400.
 
-router.put('/:id', validateAction, validateActionId, (req, res, next) => {
-    Action.update(req.params.id, {project_id: req.project_id, description: req.description, notes: req.notes, completed: (req.completed || false)})
-    .then(() => {
-      return Action.get(req.params.id)
-    })
-    .then(action => {
-      res.json(action)
-    })
-    .catch(next)
-   
+router.put("/:id", validateActionId, validateActionPut, async (req, res, next) => {
+    try {
+        const updated = await Action.update(req.params.id, req.body);
+        res.status(200).json(updated);
+    } catch (err) { next(err) }
 })
 
 // - [ ] `[DELETE] /api/actions/:id`
