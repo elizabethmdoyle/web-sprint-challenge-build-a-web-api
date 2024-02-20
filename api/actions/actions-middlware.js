@@ -32,14 +32,16 @@ async function validateActionId(req, res, next) {
 
 function validateAction(req, res, next) {
 
-    const { description, notes } = req.body;
-  if((!description || !description.trim()) || (!notes || !notes.trim()) ) {
+ const { project_id, description, notes, completed } = req.body;
+  if((!description || !description.trim()) || (!notes || !notes.trim()) || (!project_id || !project_id.trim()) ) {
     res.status(400).json({
-      message: `Both description and name are required`
+      message: `Description , project id and notes are required`
     })
   } else {
+    req.project_id = project_id.trim()
     req.notes = notes.trim()
     req.description = description.trim()  
+    req.completed = completed
     next()
   }
 
