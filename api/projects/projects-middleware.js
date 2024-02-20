@@ -13,7 +13,7 @@ function projectsLogger(req, res, next) {
  
 async function validateProject (req, res, next) {
     try {
-        const project = await Project.getId(req.params.id)
+        const project = await Project.get(req.params.id)
         if(!project) {
             res.status(404).json({
                 message: `Project could not be found`

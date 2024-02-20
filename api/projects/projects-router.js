@@ -28,7 +28,7 @@ router.get('/', (req, res, next) => {
 //   - Returns a project with the given `id` as the body of the response.
 //   - If there is no project with the given `id` it responds with a status code 404.
 
-router.get('/:id', validateProject, validateProjectId, (req, res) => {
+router.get('/:id', validateProjectId, (req, res) => {
     res.json(req.project)
     
 })

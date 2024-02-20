@@ -27,7 +27,7 @@ router.get('/', (req, res, next) => {
 //   - If there is no action with the given `id` it responds with a status code 404.
 
 
-router.get('/:id', validateAction, validateActionId, (req, res) => {
+router.get('/:id', validateActionId, (req, res) => {
     res.json(req.action)
 })
 
@@ -37,6 +37,7 @@ router.get('/:id', validateAction, validateActionId, (req, res) => {
 //   - When adding an action make sure the `project_id` provided belongs to an existing `project`.
 
 // router.post('/', validateAction, (req, res) => {
+
 
 // })
 

@@ -11,7 +11,7 @@ function actionsLogger(req, res, next) {
 
 async function validateActionId(req, res, next) {
     try {
-        const action = await Action.getId(req.params.id)
+        const action = await Action.get(req.params.id)
         if(!action) {
             res.status(404).json({
                 message: `The action could not be found`
