@@ -4,7 +4,6 @@ const Project = require('./projects-model');
 const Action = require('../actions/actions-model');
 
 const { validateProject, validateProjectId } = require('./projects-middleware');
-const {validateAction } = require('../actions/actions-middlware');
 
 const router = express.Router();
 // Inside `api/projects/projects-router.js` build the following endpoints:
@@ -53,8 +52,8 @@ router.put('/:id', validateProject, validateProjectId,  (req, res, next) => {
     .then(() => {
         return Project.get(req.params.id)
       })
-      .then(project => {
-        res.json(project)
+      .then(updateProject => {
+        res.status(200).json(updateProject)
       })
       .catch(next)
 })
@@ -81,15 +80,10 @@ router.delete('/:id', validateProjectId, async (req, res, next) => {
 
 
 //elements of this are not correct yet
-router.get('/:id/actions', validateProjectId, validateAction, async (req, res, next) => {
+router.get('/:id/actions', validateProjectId, async (req, res, next) => {
     try {
-        const result = await Action.insert({
-          user_id: req.params.id,
-          notes: req.notes,
-          description: req.description,
-        
-        })
-        res.status(201).json(result)
+        const result = await Project.getProjectActions(req.params.id )
+        res.status(200).json(result)
       } 
       catch (err) {
       next(err)
